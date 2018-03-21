@@ -1,6 +1,6 @@
 {
-  "name": "preact-pwa",
-  "short_name": "preact-pwa",
+  "name": "docker-preact-pwa",
+  "short_name": "docker-preact-pwa",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
