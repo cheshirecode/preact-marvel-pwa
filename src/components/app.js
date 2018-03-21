@@ -2,10 +2,10 @@ import { h, Component } from 'preact';
 import { Router } from 'preact-router';
 
 import Header from './header';
-// import Home from '../routes/home';
-// import Profile from '../routes/profile';
 import Home from 'async!../routes/home';
 import Profile from 'async!../routes/profile';
+import Login from 'async!../routes/login';
+import { ThemeProvider } from 'styled-components';
 
 export default class App extends Component {
   /** Gets fired when the route changes.
@@ -20,11 +20,14 @@ export default class App extends Component {
     return (
       <div id="app">
         <Header />
-        <Router onChange={this.handleRoute}>
-          <Home path="/" />
-          <Profile path="/profile/" user="me" />
-          <Profile path="/profile/:user" />
-        </Router>
+        <ThemeProvider theme={{ color: 'mediumseagreen' }}>
+          <Router onChange={this.handleRoute}>
+            <Login path="/" />
+            <Home path="/home" />
+            <Profile path="/profile/" user="me" />
+            <Profile path="/profile/:user" />
+          </Router>
+        </ThemeProvider>
       </div>
     );
   }

@@ -3,16 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "LICENSE": "MIT",
-  "dependencies": {
-    "now": "^10.2.1",
-    "preact": "^8.2.1",
-    "preact-compat": "^3.17.0",
-    "preact-material-components": "^1.3.3",
-    "preact-router": "^2.5.5",
-    "styled-components": "^3.2.1",
-    "styled-normalize": "^4.0.0"
-  },
   "devDependencies": {
+    "babel-plugin-lodash": "^3.3.2",
     "if-env": "^1.0.0",
     "preact-cli": "^2.0.0"
   }

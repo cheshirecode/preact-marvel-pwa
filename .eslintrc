@@ -4,6 +4,9 @@
       "no-unused-vars": "warn",
       "react/sort-comp": "off",
       "lines-around-comment": "off",
-      "react/prefer-stateless-function": "off"
+      "react/prefer-stateless-function": "off",
+      "react/jsx-indent-props": "off",
+      "no-mixed-spaces-and-tabs": "off",
+      "indent": "off"
     }
   }

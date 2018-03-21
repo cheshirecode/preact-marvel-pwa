@@ -1,5 +1,6 @@
 import { injectGlobal } from 'styled-components';
 import styledNormalize from 'styled-normalize';
+import './material-ui.css';
 import 'preact-material-components/Switch/style.css';
 import 'preact-material-components/Dialog/style.css';
 import 'preact-material-components/Drawer/style.css';
@@ -7,6 +8,12 @@ import 'preact-material-components/List/style.css';
 import 'preact-material-components/Toolbar/style.css';
 import 'preact-material-components/Card/style.css';
 import 'preact-material-components/Button/style.css';
+import 'preact-material-components/Radio/style.css';
+import 'preact-material-components/FormField/style.css';
+import 'preact-material-components/TextField/style.css';
+import 'preact-material-components/Checkbox/style.css';
+import 'preact-material-components/LayoutGrid/style.css';
+import 'preact-material-components/Tabs/style.css';
 
 //based on https://hackya.com/us/how-to-use-system-font/
 export default () => injectGlobal`
@@ -78,5 +85,9 @@ export default () => injectGlobal`
         color: #444;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+        background-image: url(../assets/marvel.gif);
     }
 `;
