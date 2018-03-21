@@ -2,8 +2,13 @@ import { h } from 'preact';
 import TextField from 'preact-material-components/TextField';
 import Checkbox from 'preact-material-components/Checkbox';
 import CardLayout from '../layouts/card';
-import { StyledFormLayout, StyledFormField, TextFieldWrapper, StyledButton } from '../style/form';
-import Fragment from '../components/Fragment';
+import {
+  StyledFormLayout,
+  StyledFormField,
+  TextFieldWrapper,
+  StyledButton
+} from '../components/form';
+import Fragment from '../components/fragment';
 
 import { User } from 'Parse';
 import withFormHandlers from '../utils/withFormHandlers';

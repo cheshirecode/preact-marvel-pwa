@@ -14,6 +14,7 @@ import 'preact-material-components/TextField/style.css';
 import 'preact-material-components/Checkbox/style.css';
 import 'preact-material-components/LayoutGrid/style.css';
 import 'preact-material-components/Tabs/style.css';
+import 'preact-material-components/Theme/style.css';
 
 //based on https://hackya.com/us/how-to-use-system-font/
 export default () => injectGlobal`
@@ -89,5 +90,9 @@ export default () => injectGlobal`
 
     body {
         background-image: url(../assets/marvel.gif);
+    }
+    
+    .mdc-text-field__label--float-above {
+        bottom: 1em;
     }
 `;
