@@ -89,6 +89,5 @@ export default () => injectGlobal`
 
     body {
         background-image: url(../assets/marvel.gif);
-        font-size: 24px;
     }
 `;

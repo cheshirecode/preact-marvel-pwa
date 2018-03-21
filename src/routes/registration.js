@@ -1,11 +1,11 @@
 import { h } from 'preact';
-const Fragment = 'x-fragment'; //https://github.com/developit/preact/issues/946#issuecomment-353151850
 import TextField from 'preact-material-components/TextField';
 import Checkbox from 'preact-material-components/Checkbox';
 import CardLayout from '../layouts/card';
 import { User } from 'Parse';
 import withFormHandlers from '../utils/withFormHandlers';
 import { StyledFormLayout, StyledFormField, TextFieldWrapper, StyledButton } from '../style/form';
+import Fragment from '../components/Fragment';
 
 const RegistrationPage = ({ setEmail, setPassword, setRememberMe, onSubmit }) => (
   <StyledFormLayout>
@@ -33,7 +33,7 @@ const RegistrationPage = ({ setEmail, setPassword, setRememberMe, onSubmit }) =>
         <StyledFormField>
           <Checkbox type="checkbox" value="remember-me" onChange={this.handleRememberMeClick} />
           <label>&nbsp; Remember me</label>
-          <SubmitButton raised>Register</SubmitButton>
+          <StyledButton raised>Register</StyledButton>
         </StyledFormField>
       </form>
     </CardLayout>

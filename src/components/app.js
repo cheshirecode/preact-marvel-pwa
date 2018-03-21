@@ -2,14 +2,31 @@ import { h, Component } from 'preact';
 import { Router } from 'preact-router';
 
 import Header from './header';
-import LandingPage from 'async!../routes/landingPage';
+import LandingPage from '../routes/landingPage';
 import Home from 'async!../routes/home';
 import Profile from 'async!../routes/profile';
 import Login from 'async!../routes/login';
 import Registration from 'async!../routes/registration';
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 
-export default class App extends Component {
+import { isAuthenticated } from '../utils/parse';
+import { compose, lifecycle, withState, withContext } from 'recompose';
+
+// decorate app with lifecycle hooks so the child components could know whether there is a currently authenticated user session before their own rendering
+// pass along the flag to children
+const enhance = compose(
+  withState('isAuthenticated', 'setIsAuthenticated', false),
+  lifecycle({
+    componentWillMount() {
+      this.props.setIsAuthenticated(isAuthenticated());
+    }
+  }),
+  withContext({}, ({ isAuthenticated }) => ({ isAuthenticated }))
+);
+
+const AppWrapper = styled.article``;
+
+class App extends Component {
   /** Gets fired when the route changes.
    *	@param {Object} event		"change" event from [preact-router](http://git.io/preact-router)
    *	@param {string} event.url	The newly routed URL
@@ -18,21 +35,21 @@ export default class App extends Component {
     this.currentUrl = e.url;
   };
 
-  render() {
-    return (
-      <div id="app">
-        <Header />
-        <ThemeProvider theme={{ color: 'mediumseagreen' }}>
-          <Router onChange={this.handleRoute}>
-            <LandingPage path="/" />
-            <Login path="/login" />
-            <Registration path="/registration" />
-            <Home path="/home" />
-            <Profile path="/profile/" user="me" />
-            <Profile path="/profile/:user" />
-          </Router>
-        </ThemeProvider>
-      </div>
-    );
-  }
+  render = () => (
+    <AppWrapper id="app">
+      <Header />
+      <ThemeProvider theme={{ color: 'mediumseagreen' }}>
+        <Router onChange={this.handleRoute}>
+          <LandingPage currentUrl={this.currentUrl} path="/" />
+          <Login currentUrl={this.currentUrl} path="/login" />
+          <Registration path="/registration" />
+          <Home path="/home" />
+          <Profile path="/profile/" user="me" />
+          <Profile path="/profile/:user" />
+        </Router>
+      </ThemeProvider>
+    </AppWrapper>
+  );
 }
+
+export default enhance(App);

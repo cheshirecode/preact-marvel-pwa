@@ -1,11 +1,53 @@
 import { h } from 'preact';
-const Fragment = 'x-fragment'; //https://github.com/developit/preact/issues/946#issuecomment-353151850
 import TextField from 'preact-material-components/TextField';
 import Checkbox from 'preact-material-components/Checkbox';
 import CardLayout from '../layouts/card';
+import { StyledFormLayout, StyledFormField, TextFieldWrapper, StyledButton } from '../style/form';
+import Fragment from '../components/Fragment';
+
 import { User } from 'Parse';
 import withFormHandlers from '../utils/withFormHandlers';
-import { StyledFormLayout, StyledFormField, TextFieldWrapper, StyledButton } from '../style/form';
+import { onError } from '../utils/parse';
+
+import { goToLandingPage } from '../utils/routeHandler';
+import { compose } from 'recompose';
+import withAuthCheck from '../utils/withAuthCheck';
+
+// const __DEFAULT_EMAIL__ = 'dummydummy';
+// const __DEFAULT_PASSWORD__ = 'dummydummy';
+
+const enhance = compose(
+  withAuthCheck,
+  withFormHandlers({
+    onSubmit: ({ email, password, rememberMe }) => event => {
+      event.preventDefault();
+      //backdoor
+      // if (email === __DEFAULT_EMAIL__ && password === __DEFAULT_PASSWORD__) {
+      //   const user = new User();
+      //   user.set('username', __DEFAULT_EMAIL__);
+      //   user.set('email', __DEFAULT_EMAIL__);
+      //   user.set('password', __DEFAULT_PASSWORD__);
+      //   user.set('rememberMe', rememberMe);
+      // }
+      User.logIn(email, password, {
+        success: user => {
+          // Do stuff after successful login, like a redirect.
+          console.log(
+            'User logged in successful with username: ' +
+              user.get('username') +
+              ' and email: ' +
+              user.get('email')
+          );
+          goToLandingPage();
+        },
+        error: (user, error) => {
+          console.log('The login failed with error: ' + error.code + ' ' + error.message);
+          onError(error);
+        }
+      });
+    }
+  })
+);
 
 const LoginPage = ({ setEmail, setPassword, setRememberMe, onSubmit }) => (
   <StyledFormLayout>
@@ -13,9 +55,11 @@ const LoginPage = ({ setEmail, setPassword, setRememberMe, onSubmit }) => (
       header={
         <Fragment>
           <h2 class=" mdc-typography--title">Login</h2>
-          <span class=" mdc-typography--caption">
-            dummydummy - dummydummy as default username - password
-          </span>
+          {
+            // <span class=" mdc-typography--caption">
+            //   ${__DEFAULT_EMAIL__} - ${__DEFAULT_PASSWORD__} as default username - password
+            // </span>
+          }
         </Fragment>
       }
     >
@@ -44,23 +88,4 @@ const LoginPage = ({ setEmail, setPassword, setRememberMe, onSubmit }) => (
   </StyledFormLayout>
 );
 
-export default withFormHandlers({
-  onSubmit: ({ email, password }) => event => {
-    event.preventDefault();
-
-    User.logIn(email, password, {
-      success: user => {
-        // Do stuff after successful login, like a redirect.
-        console.log(
-          'User logged in successful with username: ' +
-            user.get('username') +
-            ' and email: ' +
-            user.get('email')
-        );
-      },
-      error: (user, error) => {
-        console.log('The login failed with error: ' + error.code + ' ' + error.message);
-      }
-    });
-  }
-})(LoginPage);
+export default enhance(LoginPage);

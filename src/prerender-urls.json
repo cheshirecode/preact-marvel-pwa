@@ -1,0 +1,9 @@
+[
+  {
+    url: "/",
+    title: "Homepage"
+  },
+  {
+    url: "/login"
+  }
+]

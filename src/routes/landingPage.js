@@ -1,21 +1,10 @@
 import { h } from 'preact';
+import { compose } from 'recompose';
+import withAuthCheck from '../utils/withAuthCheck';
 
-import styled from 'styled-components';
+// only care to route users to their 'real' landing page based on authentication status.
+// in the real world, this should be handled differently with more checks like ACL based on user roles or referrer URL etc
+const enhance = compose(withAuthCheck);
+const LandingPage = () => <div />;
 
-const LandingPage = styled.div`
-  padding: 1.25em;
-`;
-
-// const CardHeader = styled.section`
-//   padding: 1em;
-// `;
-
-// const CardBody = styled.section`
-//   padding: 1em;
-// `;
-
-export default () => (
-  <LandingPage>
-    <h1>Landing page</h1>
-  </LandingPage>
-);
+export default enhance(LandingPage);
