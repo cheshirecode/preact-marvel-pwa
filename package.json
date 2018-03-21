@@ -1,0 +1,16 @@
+{
+  "name": "docker-preact-pwa",
+  "version": "1.0.0",
+  "private": true,
+  "LICENSE": "MIT",
+  "scripts": {
+    "start": "if-env NODE_ENV=production && yarn serve || yarn dev",
+    "build": "preact build",
+    "serve": "preact build && preact serve -p ${PORT:-3100}",
+    "dev": "preact watch -p ${PORT:-3100}",
+    "lint": "eslint src",
+    "precommit": "lint-staged",
+    "format": "prettier --write \"src/**/*.{js,jsx,json,css,md}\""
+  },
+  "workspaces": ["packages/*"]
+}

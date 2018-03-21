@@ -1,0 +1,20 @@
+version: '3.3'
+services:
+  # marvellicious:
+  #   volumes:
+  #     - marvellicious-sync:/usr/node/marvellicious:nocopy
+  #     - /usr/node/marvellicious/node_modules
+  preact-pwa:
+    image: "cheshirecode/docker-preact-pwa:dev_${VERSION:-1.0}"
+    container_name: "docker-preact-pwa-dev"
+    volumes:
+      - preact-pwa-sync:/usr/node/preact-pwa:nocopy
+      - /usr/node/preact-pwa/node_modules
+    build:
+      args:
+       NODE_ENV: development
+volumes:
+  # marvellicious-sync:
+  #   external: true
+  preact-pwa-sync:
+    external: true

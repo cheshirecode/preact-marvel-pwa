@@ -1,0 +1,12 @@
+{
+  "name": "docker-preact-pwa-just-editor",
+  "version": "1.0.0",
+  "private": true,
+  "LICENSE": "MIT",
+  "scripts": {
+    "lint": "eslint src",
+    "precommit": "lint-staged",
+    "format": "prettier --write \"src/**/*.{js,jsx,json,css,md}\""
+  },
+  "workspaces": ["packages/code-lint-formatting"]
+}
