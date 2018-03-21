@@ -2,9 +2,11 @@ import { h, Component } from 'preact';
 import { Router } from 'preact-router';
 
 import Header from './header';
+import LandingPage from 'async!../routes/landingPage';
 import Home from 'async!../routes/home';
 import Profile from 'async!../routes/profile';
 import Login from 'async!../routes/login';
+import Registration from 'async!../routes/registration';
 import { ThemeProvider } from 'styled-components';
 
 export default class App extends Component {
@@ -22,7 +24,9 @@ export default class App extends Component {
         <Header />
         <ThemeProvider theme={{ color: 'mediumseagreen' }}>
           <Router onChange={this.handleRoute}>
-            <Login path="/" />
+            <LandingPage path="/" />
+            <Login path="/login" />
+            <Registration path="/registration" />
             <Home path="/home" />
             <Profile path="/profile/" user="me" />
             <Profile path="/profile/:user" />

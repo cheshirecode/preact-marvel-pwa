@@ -84,10 +84,11 @@ export default () => injectGlobal`
         font-weight: 400;
         color: #444;
         -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
+        -moz-osx-font-smoothing: grayscale;        
     }
 
     body {
         background-image: url(../assets/marvel.gif);
+        font-size: 24px;
     }
 `;

@@ -1,61 +1,54 @@
-import { h, Component } from 'preact';
+import { h } from 'preact';
 const Fragment = 'x-fragment'; //https://github.com/developit/preact/issues/946#issuecomment-353151850
-import FormField from 'preact-material-components/FormField';
 import TextField from 'preact-material-components/TextField';
 import Checkbox from 'preact-material-components/Checkbox';
-import Button from 'preact-material-components/Button';
-import FormLayout from '../layouts/form';
 import CardLayout from '../layouts/card';
-import styled from 'styled-components';
-import Parse from 'Parse';
+import { User } from 'Parse';
+import withFormHandlers from '../utils/withFormHandlers';
+import { StyledFormLayout, StyledFormField, TextFieldWrapper, StyledButton } from '../style/form';
 
-const StyledFormLayout = styled(FormLayout)`
-  padding: 1.25em;
-`;
+const RegistrationPage = ({ setEmail, setPassword, setRememberMe, onSubmit }) => (
+  <StyledFormLayout>
+    <CardLayout
+      header={
+        <Fragment>
+          <h2 class=" mdc-typography--title">Registration</h2>
+        </Fragment>
+      }
+    >
+      <form onSubmit={onSubmit}>
+        <TextFieldWrapper>
+          <TextField
+            type="text"
+            label="Email address"
+            fullwidth
+            onChange={setEmail}
+            // helperText={this.state.errorMsg}
+            // helperTextPersistent={!!this.state.errorMsg}
+          />
+        </TextFieldWrapper>
+        <TextFieldWrapper>
+          <TextField type="password" label="Password" fullwidth onChange={setPassword} />
+        </TextFieldWrapper>
+        <StyledFormField>
+          <Checkbox type="checkbox" value="remember-me" onChange={this.handleRememberMeClick} />
+          <label>&nbsp; Remember me</label>
+          <SubmitButton raised>Register</SubmitButton>
+        </StyledFormField>
+      </form>
+    </CardLayout>
+  </StyledFormLayout>
+);
 
-const StyledFormField = styled(FormField)`
-  padding-top: 1em;
-  width: 100%;
-`;
-
-const TextFieldWrapper = styled.div`
-  padding-top: 1em;
-`;
-
-const SubmitButton = styled(Button)`
-  align-self: right;
-`;
-
-export default class Registration extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { email: '', password: '', rememberMe: false };
-  }
-
-  handleRememberMeClick = () =>
-    this.setState({
-      rememberMe: !this.state.rememberMe
-    });
-
-  handleUsernameChange = event =>
-    this.setState({
-      email: event.target.value
-    });
-
-  handlePasswordChange = event =>
-    this.setState({
-      password: event.target.value
-    });
-
-  handleSubmit = event => {
+export default withFormHandlers({
+  onSubmit: ({ email, password, rememberMe }) => event => {
     event.preventDefault();
 
-    const user = new Parse.User();
-    user.set('username', this.state.email);
-    user.set('email', this.state.email);
-    user.set('password', this.state.password);
-    user.set('rememberMe', this.state.rememberMe);
+    const user = new User();
+    user.set('username', email);
+    user.set('email', email);
+    user.set('password', password);
+    user.set('rememberMe', rememberMe);
 
     user.signUp(null).then(
       user => {
@@ -68,43 +61,5 @@ export default class Registration extends Component {
         });
       }
     );
-  };
-
-  render = () => (
-    <StyledFormLayout>
-      <CardLayout
-        header={
-          <Fragment>
-            <h2 class=" mdc-typography--title">Registration</h2>
-          </Fragment>
-        }
-      >
-        <form onSubmit={this.props.handleSubmit || this.handleSubmit}>
-          <TextFieldWrapper>
-            <TextField
-              type="text"
-              label="Email address"
-              fullwidth
-              onChange={this.handleUsernameChange}
-              helperText={this.state.errorMsg}
-              helperTextPersistent={!!this.state.errorMsg}
-            />
-          </TextFieldWrapper>
-          <TextFieldWrapper>
-            <TextField
-              type="password"
-              label="Password"
-              fullwidth
-              onChange={this.handlePasswordChange}
-            />
-          </TextFieldWrapper>
-          <StyledFormField>
-            <Checkbox type="checkbox" value="remember-me" onChange={this.handleRememberMeClick} />
-            <label>&nbsp; Remember me</label>
-            <SubmitButton raised>Sign up</SubmitButton>
-          </StyledFormField>
-        </form>
-      </CardLayout>
-    </StyledFormLayout>
-  );
-}
+  }
+})(RegistrationPage);
