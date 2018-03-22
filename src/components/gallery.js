@@ -22,26 +22,24 @@ const CardMedia = styled(Card.Media)`
 
 const withResponseCreateResults = compose(
   withPropsOnChange(['response'], ({ response: { data: { total = 0, results = [] } = {} } }) => ({
-    images: results.map(({ name, thumbnail: { path, extension } }) => ({
+    images: results.map(({ name, thumbnail: { path, extension }, ...props }) => ({
       name,
-      imageUrl: `${path}.${extension}`
+      imageUrl: `${path}.${extension}`,
+      ...props
     })),
     count: total
   }))
 );
 
-const Gallery = ({ count, images }) =>
+const Gallery = ({ count, images, openOverlay }) =>
   !!count && (
     <GridLayout>
-      {images.map(({ name, imageUrl }) => (
-        <CharacterCard>
-          <header class=" mdc-typography--title">{name}</header>
+      {images.map(({ name, imageUrl, ...characterInfo }) => (
+        <CharacterCard onClick={openOverlay({ name, imageUrl, ...characterInfo })}>
           <CardMedia className="card-media">
             <img src={imageUrl} />
           </CardMedia>
-          <Card.Actions>
-            <Card.ActionButton>OKAY</Card.ActionButton>
-          </Card.Actions>
+          <header className="mdc-typography--title">{name}</header>
         </CharacterCard>
       ))}
     </GridLayout>

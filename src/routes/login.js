@@ -48,9 +48,9 @@ const LoginPage = ({ email, setEmail, setPassword, setRememberMe, onSubmit }) =>
     <CardLayout
       header={
         <Fragment>
-          <h2 class=" mdc-typography--title">Login</h2>
+          <h2 className=" mdc-typography--title">Login</h2>
           {
-            <span class=" mdc-typography--caption">
+            <span className=" mdc-typography--caption">
               test@test.com - test for default username - password
             </span>
           }
