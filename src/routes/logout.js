@@ -1,16 +1,16 @@
-import { h } from 'preact';
-import { compose, lifecycle } from 'recompose';
-import withAuthCheck from '../utils/withAuthCheck';
+import { h, Component } from 'preact';
+import { compose, getContext } from 'recompose';
 import { logout } from '../utils/parse';
+import { goToLandingPage } from '../utils/routeHandler';
 
-const enhance = compose(
-  withAuthCheck,
-  lifecycle({
-    componentWillMount: () => {
-      return logout();
-    }
-  })
-);
-const Logout = () => <div />;
+const enhance = compose(getContext());
+
+class Logout extends Component {
+  componentDidMount() {
+    logout();
+    this.props.setIsAuthenticated(false);
+    goToLandingPage();
+  }
+}
 
 export default enhance(Logout);

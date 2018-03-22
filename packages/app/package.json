@@ -1,5 +1,7 @@
 {
   "name": "app",
+  "description":
+    "sad little module with nothing because of CodeSandbox not liking monorepo. Fix later.",
   "version": "1.0.0",
   "private": true,
   "LICENSE": "MIT"

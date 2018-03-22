@@ -6,8 +6,10 @@ export default compose(
   lifecycle({
     componentDidMount() {
       if (this.props.isAuthenticated) {
+        this.props.setIsAuthenticated(true);
         goToHome();
       } else {
+        this.props.setIsAuthenticated(false);
         goToLogin();
       }
     }

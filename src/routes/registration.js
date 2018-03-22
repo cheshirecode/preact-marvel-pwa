@@ -12,6 +12,36 @@ import Fragment from '../components/fragment';
 
 import { User } from 'parse';
 import withFormHandlers from '../utils/withFormHandlers';
+import { goToLandingPage } from '../utils/routeHandler';
+import { compose, getContext } from 'recompose';
+
+const enhance = compose(
+  getContext(),
+  withFormHandlers({
+    onSubmit: ({ email, password, rememberMe, setIsAuthenticated }) => event => {
+      event.preventDefault();
+      console.log(setIsAuthenticated);
+      const user = new User();
+      user.set('username', email);
+      user.set('email', email);
+      user.set('password', password);
+      user.set('rememberMe', rememberMe);
+
+      user.signUp(null).then(
+        user => {
+          console.log('User created successfully with email: ' + user.get('email'));
+          setIsAuthenticated(true);
+          goToLandingPage();
+        },
+        error => {
+          this.setState({
+            errorMsg: 'Error ' + error.code + ': ' + error.message
+          });
+        }
+      );
+    }
+  })
+);
 
 const RegistrationPage = ({ setEmail, setPassword, setRememberMe, onSubmit }) => (
   <StyledFormLayout>
@@ -24,17 +54,10 @@ const RegistrationPage = ({ setEmail, setPassword, setRememberMe, onSubmit }) =>
     >
       <form onSubmit={onSubmit}>
         <TextFieldWrapper>
-          <TextField
-            type="text"
-            label="Email address"
-            fullwidth
-            onChange={setEmail}
-            // helperText={this.state.errorMsg}
-            // helperTextPersistent={!!this.state.errorMsg}
-          />
+          <TextField type="text" label="Email address" onChange={setEmail} />
         </TextFieldWrapper>
         <TextFieldWrapper>
-          <TextField type="password" label="Password" fullwidth onChange={setPassword} />
+          <TextField type="password" label="Password" onChange={setPassword} />
         </TextFieldWrapper>
         <StyledFormField>
           <Checkbox type="checkbox" value="remember-me" onChange={this.handleRememberMeClick} />
@@ -46,26 +69,4 @@ const RegistrationPage = ({ setEmail, setPassword, setRememberMe, onSubmit }) =>
   </StyledFormLayout>
 );
 
-export default withFormHandlers({
-  onSubmit: ({ email, password, rememberMe }) => event => {
-    event.preventDefault();
-
-    const user = new User();
-    user.set('username', email);
-    user.set('email', email);
-    user.set('password', password);
-    user.set('rememberMe', rememberMe);
-
-    user.signUp(null).then(
-      user => {
-        alert('User created successfully with email: ' + user.get('email')); //eslint-disable-line no-alert
-      },
-
-      error => {
-        this.setState({
-          errorMsg: 'Error ' + error.code + ': ' + error.message
-        });
-      }
-    );
-  }
-})(RegistrationPage);
+export default enhance(RegistrationPage);

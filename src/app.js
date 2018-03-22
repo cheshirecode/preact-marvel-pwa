@@ -23,7 +23,10 @@ const enhance = compose(
       this.props.setIsAuthenticated(isAuthenticated());
     }
   }),
-  withContext({}, ({ isAuthenticated }) => ({ isAuthenticated }))
+  withContext({}, ({ isAuthenticated, setIsAuthenticated }) => ({
+    isAuthenticated,
+    setIsAuthenticated
+  }))
 );
 
 const AppWrapper = styled.article`

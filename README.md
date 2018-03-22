@@ -20,7 +20,7 @@ yarn start
 yarn build
 
 # Local production test
-yarn server
+NODE_ENV=production yarn start
 ```
 
 ### With Docker > 17.06.x-ce and Docker Compose >= 1.17.0
