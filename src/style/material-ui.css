@@ -27,10 +27,6 @@
   box-sizing: border-box;
 }
 
-#app {
-  height: 100%;
-}
-
 .mdc-theme--dark {
   background-color: #333;
   color: #fff;

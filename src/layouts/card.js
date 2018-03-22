@@ -1,6 +1,7 @@
 import { h } from 'preact';
 import Card from 'preact-material-components/Card';
 import styled, { css } from 'styled-components';
+import { compose, defaultProps } from 'recompose';
 
 const commonPadding = css`
   padding: 1em;
@@ -18,10 +19,16 @@ const CardFooter = styled.section`
   ${commonPadding};
 `;
 
-export default ({ header, children, body = children, footer }) => (
+const CardLayout = ({ header, children, body = children, footer }) => (
   <Card>
     <CardHeader>{header}</CardHeader>
     <CardBody>{body}</CardBody>
     <CardFooter>{footer}</CardFooter>
   </Card>
 );
+
+export default compose(
+  defaultProps({
+    name: 'CardLayout'
+  })
+)(CardLayout);

@@ -10,30 +10,19 @@ import {
 } from '../components/form';
 import Fragment from '../components/fragment';
 
-import { User } from 'Parse';
+import { User } from 'parse';
 import withFormHandlers from '../utils/withFormHandlers';
 import { onError } from '../utils/parse';
 
-import { goToLandingPage } from '../utils/routeHandler';
+import { goToHome } from '../utils/routeHandler';
 import { compose } from 'recompose';
 import withAuthCheck from '../utils/withAuthCheck';
-
-// const __DEFAULT_EMAIL__ = 'dummydummy';
-// const __DEFAULT_PASSWORD__ = 'dummydummy';
 
 const enhance = compose(
   withAuthCheck,
   withFormHandlers({
     onSubmit: ({ email, password, rememberMe }) => event => {
       event.preventDefault();
-      //backdoor
-      // if (email === __DEFAULT_EMAIL__ && password === __DEFAULT_PASSWORD__) {
-      //   const user = new User();
-      //   user.set('username', __DEFAULT_EMAIL__);
-      //   user.set('email', __DEFAULT_EMAIL__);
-      //   user.set('password', __DEFAULT_PASSWORD__);
-      //   user.set('rememberMe', rememberMe);
-      // }
       User.logIn(email, password, {
         success: user => {
           // Do stuff after successful login, like a redirect.
@@ -43,7 +32,7 @@ const enhance = compose(
               ' and email: ' +
               user.get('email')
           );
-          goToLandingPage();
+          goToHome();
         },
         error: (user, error) => {
           console.log('The login failed with error: ' + error.code + ' ' + error.message);
@@ -54,16 +43,16 @@ const enhance = compose(
   })
 );
 
-const LoginPage = ({ setEmail, setPassword, setRememberMe, onSubmit }) => (
+const LoginPage = ({ email, setEmail, setPassword, setRememberMe, onSubmit }) => (
   <StyledFormLayout>
     <CardLayout
       header={
         <Fragment>
           <h2 class=" mdc-typography--title">Login</h2>
           {
-            // <span class=" mdc-typography--caption">
-            //   ${__DEFAULT_EMAIL__} - ${__DEFAULT_PASSWORD__} as default username - password
-            // </span>
+            <span class=" mdc-typography--caption">
+              test@test.com - test for default username - password
+            </span>
           }
         </Fragment>
       }
@@ -75,6 +64,7 @@ const LoginPage = ({ setEmail, setPassword, setRememberMe, onSubmit }) => (
             label="Email address"
             fullwidth
             onChange={setEmail}
+            value={email}
             // helperText={this.state.errorMsg}
             // helperTextPersistent={!!this.state.errorMsg}
           />

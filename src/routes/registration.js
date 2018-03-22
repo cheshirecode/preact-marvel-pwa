@@ -10,7 +10,7 @@ import {
 } from '../components/form';
 import Fragment from '../components/fragment';
 
-import { User } from 'Parse';
+import { User } from 'parse';
 import withFormHandlers from '../utils/withFormHandlers';
 
 const RegistrationPage = ({ setEmail, setPassword, setRememberMe, onSubmit }) => (

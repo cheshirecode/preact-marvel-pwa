@@ -17,10 +17,10 @@ RUN yarn && \
 COPY --chown=node:node ./ ./
 ARG NODE_ENV
 ENV NODE_ENV ${NODE_ENV:-production}
-RUN if [ "$NODE_ENV" == "production" ]; then \
-  yarn build; \
-fi
+# RUN if [ "$NODE_ENV" == "production" ]; then \
+#   yarn build; \
+# fi
 # DEBUG
 # RUN sudo rm /etc/certs/devcert.pem && rm -rf ~/.config/devcert
-# CMD yarn start
-CMD tail -f /dev/null
+CMD yarn start
+# CMD tail -f /dev/null

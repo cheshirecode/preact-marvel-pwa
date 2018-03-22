@@ -2,10 +2,5 @@
   "name": "app",
   "version": "1.0.0",
   "private": true,
-  "LICENSE": "MIT",
-  "devDependencies": {
-    "babel-plugin-lodash": "^3.3.2",
-    "if-env": "^1.0.0",
-    "preact-cli": "^2.0.0"
-  }
+  "LICENSE": "MIT"
 }

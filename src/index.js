@@ -1,6 +1,6 @@
 import globalStyles from './style/global';
-import App from './components/app';
-import Parse from 'Parse';
+import App from './app';
+import Parse from 'parse';
 
 globalStyles();
 //initialise Parse API - ideally the ID and key should be injected at runtime through dotenv or process.env variables. For demo, we don't mind

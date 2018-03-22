@@ -1,4 +1,4 @@
-import { User, Error } from 'Parse';
+import { User, Error } from 'parse';
 import { goToLandingPage } from '../utils/routeHandler';
 
 //global error handling for Parse server API requests

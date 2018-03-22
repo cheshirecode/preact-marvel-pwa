@@ -1,19 +1,27 @@
-import { h, Component } from 'preact';
+import { h } from 'preact';
 import TextField from 'preact-material-components/TextField';
 import CardLayout from '../layouts/card';
+import Gallery from '../components/gallery';
 
-import styled from 'styled-components';
 import { throttle } from 'lodash';
-import { compose, withState, withStateHandlers } from 'recompose';
+import { compose, withState, withHandlers } from 'recompose';
 
-const createThrottledFunction = fn => throttle(fn, 300, { leading: false, trailing: true });
+const createThrottledFunction = fn =>
+  throttle(fn, 300, {
+    leading: false,
+    trailing: true
+  });
 
-const searchMarvelCharacters = ({ name = '', offset = 0, limit = 18, ...params }) => {
+const searchMarvelCharacters = ({ nameStartsWith, offset = 0, limit = 18, ...params }) => {
   const searchUrl = new URL(
     `https://gateway.marvel.com/v1/public/characters?apikey=de9b191ab671588f1d02a548221ad342`
   );
   const queryParams = {
-    ...(name ? { name } : {}),
+    ...(nameStartsWith
+      ? {
+          nameStartsWith
+        }
+      : {}),
     offset,
     limit,
     ...params
@@ -24,31 +32,25 @@ const searchMarvelCharacters = ({ name = '', offset = 0, limit = 18, ...params }
 };
 
 const enhance = compose(
-  withState('results', 'setResults', {}),
-  withStateHandlers(
-    ({ searchQuery = '', errorMsg, results, setResults }) => ({
-      searchQuery,
-      results,
-      setResults
-    }),
-    {
-      setSearchQuery: ({ setResults }) => event => {
-        const searchQuery = event.target.value;
-        searchMarvelCharacters({ name: searchQuery })
-          .then(response => response.json())
-          .then(json => setResults(json));
-      }
+  withState('response', 'setResponse', {}),
+  withHandlers({
+    onSearchTrigger: ({ response, setResponse }) => event => {
+      event.preventDefault();
+      const nameStartsWith = event.target.value;
+      searchMarvelCharacters({ nameStartsWith })
+        .then(response => response.json())
+        .then(json => setResponse(json));
     }
-  )
+  })
 );
 
-const HomePage = ({ setSearchQuery, results }) => (
-  <CardLayout footer={null}>
+const HomePage = ({ onSearchTrigger, response }) => (
+  <CardLayout footer={<Gallery response={response} />}>
     <TextField
       type="text"
       label="Please type something to start searching"
       fullwidth
-      onKeyUp={createThrottledFunction(setSearchQuery)}
+      onKeyUp={createThrottledFunction(onSearchTrigger)}
     />
   </CardLayout>
 );
