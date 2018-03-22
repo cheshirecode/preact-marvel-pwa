@@ -14,7 +14,7 @@ export default ({ nameStartsWith = '', offset = 0, limit = 18, ...params }) => {
   };
 
   Object.keys(queryParams)
-    .filter(param => queryParams[param] || ~queryParams[param] >= 0)
+    .filter(param => queryParams[param] || ~~queryParams[param] >= 0)
     .map(key => searchUrl.searchParams.append(key, queryParams[key]));
 
   return fetch(searchUrl);

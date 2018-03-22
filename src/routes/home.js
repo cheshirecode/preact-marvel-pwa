@@ -3,6 +3,7 @@ import TextField from 'preact-material-components/TextField';
 import Drawer from 'preact-material-components/Drawer';
 import Card from 'preact-material-components/Card';
 import List from 'preact-material-components/List';
+import Icon from 'preact-material-components/Icon';
 import CardLayout from '../layouts/card';
 import Gallery from '../components/gallery';
 import { TextFieldWrapper } from '../components/form';
@@ -11,11 +12,12 @@ import { routeTo } from '../utils/routeHandler';
 import searchMarvelCharacters from '../utils/searchMarvelCharacters';
 
 import { throttle } from 'lodash';
-import { compose, withStateHandlers } from 'recompose';
+import { compose, withStateHandlers, mapProps, withPropsOnChange } from 'recompose';
 import styled from 'styled-components';
 
+const DEFAULT_LIMIT = 18;
+
 const Home = styled.section`
-  border: 2px solid red;
   /* hack to width of overlay to 1/2 screen */
   aside {
     width: 50%;
@@ -27,6 +29,12 @@ const Home = styled.section`
   }
 `;
 
+const IconWrapper = styled(Icon)`
+  position: absolute;
+  right: 1em;
+  cursor: pointer;
+`;
+
 const CharacterOverlayContent = styled(Drawer.DrawerContent)``;
 
 const CharacterCard = styled.section`
@@ -34,11 +42,16 @@ const CharacterCard = styled.section`
 `;
 
 const CardMedia = styled(Card.Media)`
+  margin: 0 auto;
+
   > img {
     max-width: 480px;
     width: 100%;
-    /* height: 100%; */
   }
+`;
+
+const Pagination = styled(Card.Actions)`
+  justify-content: center;
 `;
 
 const createThrottledFunction = fn =>
@@ -49,23 +62,50 @@ const createThrottledFunction = fn =>
 
 const enhance = compose(
   withStateHandlers(
-    ({ response, isOverlayOpened = false, characterInfo = {} }) => ({
+    ({ response, isOverlayOpened = false, characterInfo = {}, offset = 0 }) => ({
       response,
       isOverlayOpened,
-      characterInfo
+      characterInfo,
+      offset
     }),
     {
-      setResponse: () => response => ({
-        response
+      setResponse: () => response => ({ response }),
+      setIsOverlayOpened: () => isOverlayOpened => ({ isOverlayOpened }),
+      setCharacterInfo: () => characterInfo => ({ characterInfo }),
+      increaseOffset: ({ offset }) => v => ({
+        offset: offset + v
       }),
-      setIsOverlayOpened: () => isOverlayOpened => ({
-        isOverlayOpened
-      }),
-      setCharacterInfo: () => characterInfo => ({
-        characterInfo
+      decreateOffset: ({ offset }) => v => ({
+        offset: offset - v
       })
     }
-  )
+  ),
+  //default props through query string and/or triggers
+  mapProps(({ nameStartsWith = '', offset, limit, response, ...props }) => ({
+    nameStartsWith,
+    offset: ~~offset || 0,
+    limit: ~~limit || DEFAULT_LIMIT,
+    response: response || {},
+    ...props
+  })),
+  //clean up API response
+  withPropsOnChange(['response'], ({ response: { data: { total = 0, results = [] } = {} } }) => ({
+    images: results.map(({ name, thumbnail: { path, extension }, ...props }) => ({
+      name,
+      imageUrl: `${path}.${extension}`,
+      ...props
+    })),
+    count: total
+  })),
+  //work out whether previous or next group are available
+  mapProps(({ offset, limit, count, ...props }) => ({
+    offset,
+    limit,
+    count,
+    isPrev: offset > 0,
+    isNext: offset + limit < count,
+    ...props
+  }))
 );
 
 class HomePage extends Component {
@@ -90,6 +130,14 @@ class HomePage extends Component {
     this.props.setIsOverlayOpened(false);
   };
 
+  nextPage() {
+    this.props.increaseOffset(this.props.limit);
+  }
+
+  prevPage() {
+    this.props.decreaseOffset(this.props.limit);
+  }
+
   search = createThrottledFunction(() => {
     const { nameStartsWith, offset, limit, setResponse } = this.props;
     searchMarvelCharacters({ nameStartsWith, offset, limit })
@@ -105,13 +153,18 @@ class HomePage extends Component {
   render() {
     const {
       nameStartsWith,
-      response = {},
+      isPrev,
+      isNext,
+      limit,
+      images,
+      count,
       isOverlayOpened,
       characterInfo: { imageUrl, description, urls = [] } = {}
     } = this.props;
+    const { nextPage, prevPage } = this;
     return (
       <Home>
-        <CardLayout footer={<Gallery response={response} openOverlay={this.openOverlay} />}>
+        <CardLayout>
           <TextFieldWrapper>
             <TextField
               type="text"
@@ -122,6 +175,7 @@ class HomePage extends Component {
           </TextFieldWrapper>
           <Drawer.TemporaryDrawer open={isOverlayOpened} onClose={this.closeOverlay}>
             <CharacterOverlayContent>
+              <IconWrapper onClick={this.closeOverlay}>close</IconWrapper>
               <CharacterCard>
                 <CardMedia className="card-media">
                   <img src={imageUrl} />
@@ -129,7 +183,7 @@ class HomePage extends Component {
                 <p>{description}</p>
                 {urls.length > 0 && (
                   <List>
-                    {// semantically weird to wrap <a> around <li>, enhancement later
+                    {// semantically weird to wrap <a> around <li>, TODO enhancement later
                     urls.map(({ type, url }) => (
                       <a href={url}>
                         <List.Item>{type}</List.Item>
@@ -140,6 +194,17 @@ class HomePage extends Component {
               </CharacterCard>
             </CharacterOverlayContent>
           </Drawer.TemporaryDrawer>
+          <Gallery count={count} images={images} openOverlay={this.openOverlay} />{' '}
+          {count > limit && (
+            <Pagination>
+              <Card.ActionButton disabled={!isPrev} onClick={prevPage}>
+                Prev
+              </Card.ActionButton>
+              <Card.ActionButton disabled={!isNext} onClick={nextPage}>
+                Next
+              </Card.ActionButton>
+            </Pagination>
+          )}
         </CardLayout>
       </Home>
     );

@@ -1,7 +1,6 @@
 import { h } from 'preact';
 import GridLayout from '../layouts/grid';
 import Card from 'preact-material-components/Card';
-import { compose, withPropsOnChange } from 'recompose';
 import styled from 'styled-components';
 
 const CharacterCard = styled(Card)`
@@ -20,17 +19,6 @@ const CardMedia = styled(Card.Media)`
   }
 `;
 
-const withResponseCreateResults = compose(
-  withPropsOnChange(['response'], ({ response: { data: { total = 0, results = [] } = {} } }) => ({
-    images: results.map(({ name, thumbnail: { path, extension }, ...props }) => ({
-      name,
-      imageUrl: `${path}.${extension}`,
-      ...props
-    })),
-    count: total
-  }))
-);
-
 const Gallery = ({ count, images, openOverlay }) =>
   !!count && (
     <GridLayout>
@@ -45,4 +33,4 @@ const Gallery = ({ count, images, openOverlay }) =>
     </GridLayout>
   );
 
-export default withResponseCreateResults(Gallery);
+export default Gallery;
