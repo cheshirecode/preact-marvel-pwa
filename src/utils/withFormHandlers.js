@@ -21,6 +21,7 @@ export default ({ onSubmit }) =>
         setErrorMessage: errorMsg => msg => ({
           errorMsg: msg
         }),
+        // this handler should be created separately by right but it works for now
         onSubmit
       }
     )

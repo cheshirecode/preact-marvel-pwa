@@ -89,7 +89,7 @@ export default () => injectGlobal`
     }
 
     body {
-        background-image: url(../assets/marvel.gif);
+        background-image: url(/assets/marvel.gif);
     }
     
     .mdc-text-field__label--float-above {

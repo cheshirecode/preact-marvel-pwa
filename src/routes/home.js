@@ -2,9 +2,11 @@ import { h } from 'preact';
 import TextField from 'preact-material-components/TextField';
 import CardLayout from '../layouts/card';
 import Gallery from '../components/gallery';
-
+import { TextFieldWrapper } from '../components/form';
+import { routeTo } from '../utils/routeHandler';
+import searchMarvelCharacters from '../utils/searchMarvelCharacters';
 import { throttle } from 'lodash';
-import { compose, withState, withHandlers } from 'recompose';
+import { compose, withState, withHandlers, lifecycle, withPropsOnChange } from 'recompose';
 
 const createThrottledFunction = fn =>
   throttle(fn, 300, {
@@ -12,46 +14,37 @@ const createThrottledFunction = fn =>
     trailing: true
   });
 
-const searchMarvelCharacters = ({ nameStartsWith, offset = 0, limit = 18, ...params }) => {
-  const searchUrl = new URL(
-    `https://gateway.marvel.com/v1/public/characters?apikey=de9b191ab671588f1d02a548221ad342`
-  );
-  const queryParams = {
-    ...(nameStartsWith
-      ? {
-          nameStartsWith
-        }
-      : {}),
-    offset,
-    limit,
-    ...params
-  };
-  Object.keys(queryParams).map(key => searchUrl.searchParams.append(key, queryParams[key]));
-
-  return fetch(searchUrl);
-};
-
 const enhance = compose(
-  withState('response', 'setResponse', {}),
+  withState('response', 'setResponse', ({ response }) => response),
   withHandlers({
-    onSearchTrigger: ({ response, setResponse }) => event => {
-      event.preventDefault();
-      const nameStartsWith = event.target.value;
-      searchMarvelCharacters({ nameStartsWith })
-        .then(response => response.json())
-        .then(json => setResponse(json));
+    setQueryString: ({ setResponse, nameStartsWith, offset, limit }) => event => {
+      setResponse(false);
+      routeTo(`/home/${event.target.value}/${offset}/${limit}`)();
     }
-  })
+  }),
+  withPropsOnChange(
+    ['response', 'nameStartsWith', 'offset', 'limit'],
+    ({ nameStartsWith, offset, limit, setResponse, response, ...params }) => {
+      if (!response) {
+        searchMarvelCharacters({ nameStartsWith, offset, limit })
+          .then(response => response.json())
+          .then(json => setResponse(json));
+      }
+      return { nameStartsWith, offset, limit, setResponse, response, ...params };
+    }
+  )
 );
 
-const HomePage = ({ onSearchTrigger, response }) => (
+const HomePage = ({ nameStartsWith, setQueryString, response = {} }) => (
   <CardLayout footer={<Gallery response={response} />}>
-    <TextField
-      type="text"
-      label="Please type something to start searching"
-      fullwidth
-      onKeyUp={createThrottledFunction(onSearchTrigger)}
-    />
+    <TextFieldWrapper>
+      <TextField
+        type="text"
+        label="Please type something to start searching"
+        value={nameStartsWith}
+        onKeyUp={createThrottledFunction(setQueryString)}
+      />
+    </TextFieldWrapper>
   </CardLayout>
 );
 

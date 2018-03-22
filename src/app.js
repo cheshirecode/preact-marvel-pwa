@@ -27,6 +27,8 @@ const enhance = compose(
 
 const AppWrapper = styled.article`
   height: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
 `;
 
 class App extends Component {

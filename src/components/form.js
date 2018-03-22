@@ -1,5 +1,6 @@
 import FormField from 'preact-material-components/FormField';
 import Button from 'preact-material-components/Button';
+import TextField from 'preact-material-components/TextField';
 import FormLayout from '../layouts/form';
 import styled from 'styled-components';
 
@@ -14,6 +15,10 @@ export const StyledFormField = styled(FormField)`
 
 export const TextFieldWrapper = styled.div`
   padding-top: 1em;
+  /* avoid the warning then using fullwidth props + label */
+  .mdc-text-field {
+    width: 100%;
+  }
 `;
 
 export const StyledButton = styled(Button)`

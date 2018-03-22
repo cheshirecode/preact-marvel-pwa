@@ -7,8 +7,9 @@
     "start": "if-env NODE_ENV=production && yarn serve || yarn dev",
     "build": "preact build --clean --no-prerender",
     "serve": "yarn build && preact serve -p ${PORT:-3100}",
-    "surge": "yarn build && cp build/index.html build/200.html && npx surge build",
-    "serve-static": "yarn build && npx serve build -s",
+    "surge":
+      "yarn build && cp build/index.html build/200.html && npx surge build docker-preact-marvellous.surge.sh",
+    "now": "yarn build && rm build/*.map && npx now build --public",
     "dev": "preact watch -p ${PORT:-3100}",
     "lint": "eslint src",
     "precommit": "lint-staged",

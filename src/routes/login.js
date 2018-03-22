@@ -62,7 +62,6 @@ const LoginPage = ({ email, setEmail, setPassword, setRememberMe, onSubmit }) =>
           <TextField
             type="text"
             label="Email address"
-            fullwidth
             onChange={setEmail}
             value={email}
             // helperText={this.state.errorMsg}

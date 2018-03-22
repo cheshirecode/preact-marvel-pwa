@@ -6,7 +6,6 @@ import styled from 'styled-components';
 const Grid = styled.section`
   display: grid;
   grid-template-columns: ${({ itemsPerRow = 3 }) => `repeat(${itemsPerRow}, 1fr)`};
-  grid-auto-rows: 1fr;
   grid-gap: 1em;
 `;
 

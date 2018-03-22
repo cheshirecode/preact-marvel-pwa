@@ -6,10 +6,6 @@ import styled from 'styled-components';
 
 const CharacterCard = styled(Card)`
   > header {
-    width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     padding: 0.5em 1em;
     font-size: 1.5em;
     font-weight: 600;
@@ -18,11 +14,9 @@ const CharacterCard = styled(Card)`
 
 const CardMedia = styled(Card.Media)`
   > img {
-    max-width: 300px;
-    max-height: 300px;
+    max-width: 480px;
     width: 100%;
-    height: 100%;
-    opacity: 0;
+    /* height: 100%; */
   }
 `;
 
