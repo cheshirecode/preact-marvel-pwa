@@ -21,7 +21,7 @@ import withAuthCheck from '../utils/withAuthCheck';
 const enhance = compose(
   withAuthCheck,
   withFormHandlers({
-    onSubmit: ({ email, password, rememberMe }) => event => {
+    onSubmit: ({ email, password, rememberMe, setIsAuthenticated }) => event => {
       event.preventDefault();
       User.logIn(email, password, {
         success: user => {
@@ -32,6 +32,7 @@ const enhance = compose(
               ' and email: ' +
               user.get('email')
           );
+          setIsAuthenticated(true);
           goToHome();
         },
         error: (user, error) => {

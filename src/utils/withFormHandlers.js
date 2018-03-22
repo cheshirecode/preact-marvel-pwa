@@ -3,10 +3,11 @@ import { compose, withStateHandlers } from 'recompose';
 export default ({ onSubmit }) =>
   compose(
     withStateHandlers(
-      ({ email = '', password = '', rememberMe = false, errorMsg }) => ({
+      ({ email = '', password = '', rememberMe = false, setIsAuthenticated }) => ({
         email,
         password,
-        rememberMe
+        rememberMe,
+        setIsAuthenticated
       }),
       {
         setEmail: () => event => ({

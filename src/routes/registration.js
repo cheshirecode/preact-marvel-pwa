@@ -20,7 +20,6 @@ const enhance = compose(
   withFormHandlers({
     onSubmit: ({ email, password, rememberMe, setIsAuthenticated }) => event => {
       event.preventDefault();
-      console.log(setIsAuthenticated);
       const user = new User();
       user.set('username', email);
       user.set('email', email);
