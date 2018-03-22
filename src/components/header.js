@@ -33,10 +33,6 @@ class Header extends Component {
     this.closeDrawer();
   };
 
-  routeToHome = this.routeTo('/home');
-  routeToRegistration = this.routeTo('/registration');
-  routeToLogin = this.routeTo('/login');
-
   render = () => (
     <div>
       <Toolbar className="toolbar">

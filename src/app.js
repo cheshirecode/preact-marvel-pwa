@@ -6,6 +6,7 @@ import LandingPage from 'async!./routes/landingPage';
 import Home from 'async!./routes/home';
 import Profile from 'async!./routes/profile';
 import Login from 'async!./routes/login';
+import Logout from 'async!./routes/logout';
 import Registration from 'async!./routes/registration';
 import styled from 'styled-components';
 
@@ -51,6 +52,7 @@ class App extends Component {
         <Home path="/home/:nameStartsWith?/:offset?/:limit?" />
         <Profile path="/profile/" user="me" />
         <Profile path="/profile/:user" />
+        <Logout path="/logout" />
       </Router>
     </AppWrapper>
   );

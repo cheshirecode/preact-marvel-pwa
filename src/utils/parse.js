@@ -17,3 +17,8 @@ export const isAuthenticated = () => {
   const currentUser = User.current();
   return currentUser && currentUser.authenticated();
 };
+
+export const logout = () => {
+  User.logOut();
+  return User.current();
+};

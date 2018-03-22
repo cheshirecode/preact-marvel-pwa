@@ -61,6 +61,14 @@ const createThrottledFunction = fn =>
   });
 
 const enhance = compose(
+  //default props through query string and/or triggers
+  mapProps(({ nameStartsWith = '', offset, limit, response, ...props }) => ({
+    nameStartsWith,
+    offset: ~~offset || 0,
+    limit: ~~limit || DEFAULT_LIMIT,
+    response: response || {},
+    ...props
+  })),
   withStateHandlers(
     ({ response, isOverlayOpened = false, characterInfo = {}, offset = 0 }) => ({
       response,
@@ -75,19 +83,11 @@ const enhance = compose(
       increaseOffset: ({ offset }) => v => ({
         offset: offset + v
       }),
-      decreateOffset: ({ offset }) => v => ({
+      decreaseOffset: ({ offset }) => v => ({
         offset: offset - v
       })
     }
   ),
-  //default props through query string and/or triggers
-  mapProps(({ nameStartsWith = '', offset, limit, response, ...props }) => ({
-    nameStartsWith,
-    offset: ~~offset || 0,
-    limit: ~~limit || DEFAULT_LIMIT,
-    response: response || {},
-    ...props
-  })),
   //clean up API response
   withPropsOnChange(['response'], ({ response: { data: { total = 0, results = [] } = {} } }) => ({
     images: results.map(({ name, thumbnail: { path, extension }, ...props }) => ({
@@ -115,9 +115,11 @@ class HomePage extends Component {
   }
 
   //afterwards, if new props is not empty, chargeee or else reset to empty state
-  componentWillReceiveProps({ response, nameStartsWith }) {
+  componentWillReceiveProps({ response, nameStartsWith, offset }) {
     if (this.props.nameStartsWith !== nameStartsWith) {
       nameStartsWith.length > 0 ? this.search() : this.props.setResponse(false);
+    } else {
+      this.props.offset !== offset && this.search();
     }
   }
 
@@ -130,13 +132,21 @@ class HomePage extends Component {
     this.props.setIsOverlayOpened(false);
   };
 
-  nextPage() {
-    this.props.increaseOffset(this.props.limit);
-  }
+  nextPage = () => {
+    const { nameStartsWith, offset, limit, increaseOffset } = this.props;
+    increaseOffset(limit);
+    this.route({ nameStartsWith, offset: offset + limit, limit });
+  };
 
-  prevPage() {
-    this.props.decreaseOffset(this.props.limit);
-  }
+  prevPage = () => {
+    const { nameStartsWith, offset, limit, decreaseOffset } = this.props;
+    decreaseOffset(limit);
+    this.route({ nameStartsWith, offset: offset - limit, limit });
+  };
+
+  route = ({ nameStartsWith, offset, limit }) => {
+    routeTo(`/home/${nameStartsWith}/${offset}/${limit}`)();
+  };
 
   search = createThrottledFunction(() => {
     const { nameStartsWith, offset, limit, setResponse } = this.props;
