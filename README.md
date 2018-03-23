@@ -4,6 +4,11 @@ Experimenting with:
 
 * [Preact CLI](https://github.com/developit/preact-cli)
 * [preact-material-components](https://github.com/prateekbh/preact-material-components)
+* [Parse Server](https://www.back4app.com/)
+* [Marvel Developer Portal](https://developer.marvel.com/)
+
+[Demo link](https://docker-preact-marvellous.surge.sh)
+
 
 ## Commands
 
