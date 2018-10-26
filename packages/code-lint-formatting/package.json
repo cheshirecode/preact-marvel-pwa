@@ -4,16 +4,16 @@
   "private": true,
   "LICENSE": "MIT",
   "devDependencies": {
-    "eslint": "^4.5.0",
+    "eslint": "^5.8.0",
     "eslint-config-prettier": "^3.1.0",
     "eslint-config-recommended": "^4.0.0",
-    "eslint-config-synacor": "^1.1.0",
+    "eslint-config-synacor": "^3.0.3",
     "eslint-plugin-babel": "^5.2.1",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-json": "^1.2.1",
     "eslint-plugin-prettier": "^3.0.0",
     "eslint-plugin-react": "^7.11.1",
-    "husky": "^0.14.3",
+    "husky": "^1.1.2",
     "lint-staged": "^7.0.0",
     "prettier": "^1.14.3"
   }
