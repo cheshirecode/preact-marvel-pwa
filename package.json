@@ -8,9 +8,8 @@
     "build": "preact build --clean --no-prerender",
     "serve": "yarn build && preact serve -p ${PORT:-3100}",
     "surge":
-      "yarn build && cp build/index.html build/200.html && npx surge build docker-preact-marvellous.surge.sh",
-    "now": "yarn build && rm build/*.map && npx now build --public",
-    "now-container": "npx now --public --docker",
+      "yarn build && cp build/index.html build/200.html && npx surge build docker-preact-pwa.surge.sh",
+    "now": "yarn build && rm build/*.map && npx now alias $(npx now build) docker-preact-pwa",
     "dev": "preact watch -p ${PORT:-3100}",
     "lint": "eslint src",
     "precommit": "lint-staged",
