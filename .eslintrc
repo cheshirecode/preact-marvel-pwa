@@ -1,5 +1,6 @@
 {
   "extends": ["eslint-config-synacor", "prettier", "prettier/react"],
+  "plugins": ["babel", "import", "react", "prettier", "json"],
   "rules": {
     "no-unused-vars": "warn",
     "react/sort-comp": "off",
