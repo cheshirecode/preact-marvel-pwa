@@ -25,7 +25,9 @@ const enhance = compose(
       event.preventDefault();
       User.logIn(email, password, {
         success: user => {
+          //eslint-disable no-console
           // Do stuff after successful login, like a redirect.
+          //eslint-disable-next-line no-console
           console.log(
             'User logged in successful with username: ' +
               user.get('username') +
@@ -36,6 +38,7 @@ const enhance = compose(
           goToHome();
         },
         error: (user, error) => {
+          //eslint-disable-next-line no-console
           console.log('The login failed with error: ' + error.code + ' ' + error.message);
           onError(error);
         }

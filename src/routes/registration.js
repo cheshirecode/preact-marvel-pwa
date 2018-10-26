@@ -28,6 +28,7 @@ const enhance = compose(
 
       user.signUp(null).then(
         user => {
+          //eslint-disable-next-line no-console
           console.log('User created successfully with email: ' + user.get('email'));
           setIsAuthenticated(true);
           goToLandingPage();

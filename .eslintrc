@@ -1,12 +1,18 @@
 {
-    "extends": "eslint-config-synacor",
-    "rules": {
-      "no-unused-vars": "warn",
-      "react/sort-comp": "off",
-      "lines-around-comment": "off",
-      "react/prefer-stateless-function": "off",
-      "react/jsx-indent-props": "off",
-      "no-mixed-spaces-and-tabs": "off",
-      "indent": "off"
-    }
+  "extends": ["eslint-config-synacor", "prettier", "prettier/react"],
+  "rules": {
+    "no-unused-vars": "warn",
+    "react/sort-comp": "off",
+    "lines-around-comment": "off",
+    "react/prefer-stateless-function": "off",
+    "react/jsx-indent-props": "off",
+    "no-mixed-spaces-and-tabs": "off",
+    "indent": "off",
+    "import/no-unresolved": [
+      2,
+      {
+        "ignore": ["react-?", "async!?"]
+      }
+    ]
   }
+}

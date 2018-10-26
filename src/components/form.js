@@ -13,7 +13,7 @@ export const StyledFormField = styled(FormField)`
   width: 100%;
 `;
 
-export const TextFieldWrapper = styled.div`
+export const TextFieldWrapper = styled(TextField)`
   padding-top: 1em;
   /* avoid the warning then using fullwidth props + label */
   .mdc-text-field {
