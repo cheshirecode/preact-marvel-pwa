@@ -1,0 +1,12 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "package.json",
+        "package.json.editor",
+        "packages/app/package.json",
+        "packages/code-lint-formatting/package.json"
+      ]
+    }
+  }
+}
