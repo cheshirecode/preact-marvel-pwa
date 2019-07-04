@@ -7,15 +7,18 @@
     "start": "if-env NODE_ENV=production && yarn serve || yarn dev",
     "build": "preact build --clean --no-prerender",
     "serve": "yarn build && preact serve -p ${PORT:-3100}",
-    "surge":
-      "yarn build && cp build/index.html build/200.html && npx surge build docker-preact-pwa.surge.sh",
+    "surge": "yarn build && cp build/index.html build/200.html && npx surge build docker-preact-pwa.surge.sh",
     "now": "yarn build && rm build/*.map && npx now alias $(npx now build) docker-preact-pwa",
     "dev": "preact watch -p ${PORT:-3100}",
     "lint": "eslint src",
     "precommit": "lint-staged",
-    "format": "prettier --write \"src/**/*.{js,jsx,json,css,md}\""
+    "format": "prettier --write \"src/**/*.{js,jsx,json,css,md}\"",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "dependencies": {
     "parse": "^2.1.0",
     "preact": "^8.2.1",
@@ -24,11 +27,13 @@
     "preact-router": "^2.5.5",
     "recompose": "^0.30.0",
     "styled-components": "^4.0.2",
-    "styled-normalize": "^8.0.3"
+    "styled-normalize": "^8.0.3",
+    "snyk": "^1.189.0"
   },
   "devDependencies": {
     "preact-cli-lodash": "^1.1.0",
     "if-env": "^1.0.0",
     "preact-cli": "^2.0.0"
-  }
+  },
+  "snyk": true
 }
