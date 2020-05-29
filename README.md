@@ -1,6 +1,6 @@
 # Docker-preact-pwa
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/cheshirecode/docker-preact-pwa.svg)](https://greenkeeper.io/)
+
 
 Experimenting with:
 
